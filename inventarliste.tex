@@ -1,0 +1,83 @@
+\documentclass[a4paper,landscape]{article}
+
+\usepackage[a4paper, landscape, margin=1.5cm]{geometry}
+\usepackage{array}
+\usepackage[T1]{fontenc}
+\usepackage[ngerman]{babel}
+\usepackage{helvet}
+\renewcommand{\familydefault}{\sfdefault}
+
+% Tabellen-Padding stark reduzieren, damit 20 Zeilen auf eine Seite passen.
+% Visuelle Zeilenhoehe wird ausschliesslich per \rule gesteuert.
+\renewcommand{\arraystretch}{0.1}
+\setlength{\tabcolsep}{4pt}
+
+\pagestyle{empty}
+\parindent=0pt
+
+% Datenzelle
+\newcommand{\inventarrow}{%
+  \rule{0pt}{0.73cm} & & & \\[0pt] \hline
+}
+
+\newcolumntype{P}[1]{>{\raggedright\arraybackslash}p{#1}}
+
+\begin{document}
+
+% ── Kopf ──────────────────────────────────────────────────────────────────────
+\begin{center}
+	{\LARGE\bfseries Tiefkühl-Inventarliste}\\[0.15cm]
+	{\small
+	Truhe:\;\underline{\hspace{4.5cm}}\hspace{1.2cm}
+	Angelegt am:\;\underline{\hspace{2.8cm}}\hspace{1.2cm}
+	Seite:\;\underline{\hspace{1.4cm}}%
+	}
+\end{center}
+
+\vspace{0.15cm}
+
+% ── Tabelle ───────────────────────────────────────────────────────────────────
+% Spaltenbreiten-Summe: 8.0+3.5+3.0+11.0 = 25.5 cm
+% + 8x tabcolsep(4pt) = 0.9 cm  =>  ~26.4 cm  <=  26.7 cm Textbreite
+\noindent
+\begin{tabular}{%
+	|P{8.0cm}%   Produkt
+	|P{3.5cm}%   Einfrierdatum
+	|P{3.0cm}%   Haltbar bis
+	|P{11.0cm}%  Menge
+	|}
+	\hline
+	% Kopfzeile – fett, kein Hintergrund
+	\multicolumn{1}{|>{\centering\arraybackslash\bfseries}p{8.0cm}|}%
+	{\rule{0pt}{0.45cm}Produkt / Bezeichnung}
+	 & \multicolumn{1}{>{\centering\arraybackslash\bfseries}p{3.5cm}|}  %
+	{Einfrierdatum}
+	 & \multicolumn{1}{>{\centering\arraybackslash\bfseries}p{3.0cm}|}  %
+	{Haltbar bis}
+	 & \multicolumn{1}{>{\centering\arraybackslash\bfseries}p{11.0cm}|} %
+	{Menge\;\textnormal{\footnotesize(bei Entnahme durchstreichen \& neu eintragen)}}
+	\\\hline
+	% ── 20 Datenzeilen ──
+	\inventarrow
+	\inventarrow
+	\inventarrow
+	\inventarrow
+	\inventarrow
+	\inventarrow
+	\inventarrow
+	\inventarrow
+	\inventarrow
+	\inventarrow
+	\inventarrow
+	\inventarrow
+	\inventarrow
+	\inventarrow
+	\inventarrow
+	\inventarrow
+	\inventarrow
+	\inventarrow
+	\inventarrow
+	\inventarrow
+\end{tabular}
+
+\end{document}
