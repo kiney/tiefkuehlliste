@@ -8,6 +8,8 @@ Mengen bestehen aus geordneten Komponenten. `package` speichert eine ganzzahlige
 
 Beispiele: `3 × 500 g`, `800 g`, `2 Stück` und `1 × 1000 g + 800 g` bleiben getrennt strukturiert und werden in dieser Reihenfolge angezeigt. Bei Entnahme wird eine Komponente ausdrücklich gewählt; die UI schlägt einen vorhandenen losen Rest vor einer vollen Packung vor. Eine ganze Packung reduziert deren Anzahl. Eine Teilentnahme aus einer Packung reduziert zunächst eine Packung und erzeugt den verbleibenden Inhalt als eigene lose Komponente. Vorhandene Reste werden nicht ungefragt zusammengefasst. Daher wird `1 × 1000 g + 800 g` bei Auswahl des 800-g-Rests und Entnahme von 200 g zu `1 × 1000 g + 600 g`. Bei `2 × 500 g + 250 g` führt zweimal 250 g entnehmen – zuerst aus dem vorgeschlagenen Rest, dann aus einer gewählten Packung – zu `1 × 500 g + 250 g`.
 
+Beim Neuanlegen eines gleichnamigen Produkts bietet die UI vorhandene, dimensionskompatible Einträge als Zusammenführungsziel an. Gleiche Packungsgrößen werden dabei zu einer Packungskomponente addiert; lose Reste bleiben getrennt. Der Zieleintrag behält Einfrierdatum, Haltbarkeit und Hinweis. Für unterschiedliche Chargen oder Haltbarkeiten kann der Nutzer ausdrücklich separat anlegen.
+
 ## Daten, API und Sicherheit
 
 Migrationen sind nummerierte, idempotent registrierte SQL-Schritte. Alle fachlichen Tabellen sind `STRICT`. Ein partieller eindeutiger Index erlaubt höchstens eine Standardtruhe; Transaktionen sorgen beim Umschalten für genau eine. Beim ersten Start entsteht „Tiefkühltruhe“ als Standard.

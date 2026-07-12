@@ -190,3 +190,46 @@ def test_withdrawal_from_loose_only_and_whole_package(client, auth):
         json={"part_index": 0, "amount": 1},
     ).json["data"]
     assert reduced["parts"][0]["amount"] == 1
+
+
+def test_equal_package_sizes_are_combined(client, auth):
+    freezer = client.get("/api/freezers", headers=auth).json["data"][0]
+    made = client.post(
+        "/api/items",
+        headers=auth,
+        json={
+            "freezer_id": freezer["id"],
+            "product": "Erbsen",
+            "parts": [
+                {"kind": "package", "amount": 1, "package_size": 500, "unit": "g"},
+                {"kind": "package", "amount": 2, "package_size": 500, "unit": "g"},
+            ],
+        },
+    ).json["data"]
+    assert made["parts"] == [{"kind": "package", "amount": 3, "package_size": 500, "unit": "g"}]
+
+
+def test_audit_api_returns_all_entries_with_parsed_snapshots(client, auth):
+    db = sqlite3.connect(client.application.config["DATABASE"])
+    rows = [
+        (
+            f"2026-01-01T00:00:{index % 60:02d}+00:00",
+            "anna",
+            "update",
+            "item",
+            index,
+            '{"amount": 1}',
+            '{"amount": 2, "parts": [{"kind": "loose", "amount": 2}]}',
+        )
+        for index in range(205)
+    ]
+    db.executemany(
+        "INSERT INTO audit_log(occurred_at,username,action,entity,entity_id,before_json,after_json) VALUES(?,?,?,?,?,?,?)",
+        rows,
+    )
+    db.commit()
+    response = client.get("/api/audit", headers=auth)
+    assert response.status_code == 200
+    assert len(response.json["data"]) == 205
+    assert response.json["data"][0]["before"] == {"amount": 1}
+    assert response.json["data"][0]["after"]["parts"][0]["kind"] == "loose"

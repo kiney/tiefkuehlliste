@@ -44,7 +44,26 @@ button { background:var(--accent); color:var(--surface); border-color:transparen
 .wide { width:100%; margin:1rem 0; }
 .error { color:#b42318; min-height:1.2em; }
 .hint { color:var(--muted); margin:0; }
+.dialog-actions { display:flex; justify-content:flex-end; gap:.6rem; flex-wrap:wrap; }
 dialog { width:min(40rem,calc(100% - 2rem)); max-height:85vh; border:1px solid var(--border); border-radius:1rem; background:var(--surface); color:var(--text); }
+#history-dialog { width:min(72rem,calc(100% - 2rem)); }
+.history-toolbar { display:flex; align-items:center; justify-content:flex-end; gap:.5rem; flex-wrap:wrap; }
+.history-toolbar span { margin-right:auto; color:var(--muted); }
+#history-list { display:grid; gap:.55rem; }
+.audit-event { border:1px solid var(--border); border-radius:.7rem; overflow:hidden; }
+.audit-event > summary { display:flex; justify-content:space-between; gap:1rem; padding:.8rem; cursor:pointer; background:var(--bg); }
+.audit-summary-main { min-width:0; }
+.audit-meta { color:var(--muted); font-size:.88rem; text-align:right; }
+.audit-body { display:grid; gap:.7rem; padding:.8rem; }
+.audit-body h3,.audit-body h4 { margin:.15rem 0; }
+.audit-diff-wrap { max-width:100%; overflow-x:auto; }
+.audit-diff { width:100%; border-collapse:collapse; }
+.audit-diff th,.audit-diff td { min-width:9rem; padding:.55rem; border:1px solid var(--border); text-align:left; vertical-align:top; }
+.audit-diff th:first-child { min-width:8rem; }
+.audit-diff pre,.snapshot-grid pre { max-width:100%; margin:0; white-space:pre-wrap; overflow-wrap:anywhere; font: .82rem ui-monospace,monospace; }
+.audit-snapshots > summary { cursor:pointer; font-weight:700; }
+.snapshot-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:.7rem; margin-top:.7rem; }
+.snapshot-grid section { min-width:0; padding:.65rem; border:1px solid var(--border); border-radius:.5rem; }
 dialog::backdrop { background:#0008; }
 .close { float:right; font-size:1.4rem; }
 @media(max-width:650px) {
@@ -69,4 +88,14 @@ dialog::backdrop { background:#0008; }
   .list-head { align-items:stretch; flex-direction:column; }
   .grid { grid-template-columns:1fr; }
   .quick h1 { font-size:1.45rem; }
+  .audit-event > summary { display:grid; gap:.25rem; }
+  .audit-meta { text-align:left; }
+  .snapshot-grid { grid-template-columns:1fr; }
+  .audit-diff-wrap { overflow:visible; }
+  .audit-diff,.audit-diff tbody,.audit-diff tr,.audit-diff th,.audit-diff td { display:block; width:100%; min-width:0; }
+  .audit-diff thead { position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0,0,0,0); }
+  .audit-diff tr { margin-bottom:.7rem; border:1px solid var(--border); border-radius:.5rem; overflow:hidden; }
+  .audit-diff th,.audit-diff td { border:0; border-bottom:1px solid var(--border); }
+  .audit-diff td:last-child { border-bottom:0; }
+  .audit-diff th::before,.audit-diff td::before { content:attr(data-label); display:block; margin-bottom:.25rem; color:var(--muted); font:700 .72rem system-ui,sans-serif; text-transform:uppercase; }
 }

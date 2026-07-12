@@ -1,3 +1,4 @@
+import json
 import os
 import sqlite3
 from pathlib import Path
@@ -49,7 +50,19 @@ def quantity_payload(parts):
             if scaled != int(scaled) or size <= 0 or abs(raw_size * factor - size) > 1e-9:
                 raise ValueError("Packungsanzahl und -größe sind ungültig.")
         result.append({"kind": kind, "amount": int(scaled), "package_size": size})
-    return result, dimension or "weight"
+    normalized = []
+    package_positions = {}
+    for part in result:
+        if part["kind"] != "package":
+            normalized.append(part)
+            continue
+        size = part["package_size"]
+        if size in package_positions:
+            normalized[package_positions[size]]["amount"] += part["amount"]
+        else:
+            package_positions[size] = len(normalized)
+            normalized.append(part)
+    return normalized, dimension or "weight"
 
 
 def item_dict(db, item_id):
@@ -377,12 +390,16 @@ def create_app(test_config=None):
     @app.get("/api/audit")
     @login_required
     def audit_entries():
-        return jsonify(
-            data=[
-                dict(r)
-                for r in get_db().execute("SELECT * FROM audit_log ORDER BY id DESC LIMIT 200")
-            ]
-        )
+        entries = []
+        for row in get_db().execute("SELECT * FROM audit_log ORDER BY id DESC"):
+            entry = dict(row)
+            for source, target in (("before_json", "before"), ("after_json", "after")):
+                try:
+                    entry[target] = json.loads(entry[source]) if entry[source] is not None else None
+                except json.JSONDecodeError:
+                    entry[target] = {"_unparseable_snapshot": entry[source]}
+            entries.append(entry)
+        return jsonify(data=entries)
 
     @app.errorhandler(sqlite3.IntegrityError)
     def integrity(_exc):

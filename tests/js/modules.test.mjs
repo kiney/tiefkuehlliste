@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import {chooseActiveFreezer,effectiveTheme,filterItems,formatQuantity,nextTheme,updateThemeButton} from '../../src/tiefkuehlliste/static/modules.js';
+import {auditChanges,chooseActiveFreezer,effectiveTheme,filterItems,findMergeCandidates,formatAuditValue,formatQuantity,nextTheme,normalizeProduct,quantityDimension,updateThemeButton} from '../../src/tiefkuehlliste/static/modules.js';
 const parts=[{kind:'package',amount:1,package_size:1000,unit:'g'},{kind:'loose',amount:800,unit:'g'}];
 assert.equal(formatQuantity(parts),'1 × 1000 g + 800 g');
 assert.equal(formatQuantity([{kind:'loose',amount:2,unit:'piece'}]),'2 Stück');
@@ -10,4 +10,10 @@ assert.equal(nextTheme('light'),'dark');assert.equal(nextTheme('dark'),'light');
 const button={setAttribute(name,value){this[name]=value}};updateThemeButton(button,'dark');assert.equal(button.textContent,'☀');assert.match(button['aria-label'],/aktuell dunkel/);
 assert.equal(chooseActiveFreezer([{id:1,is_default:1},{id:2,is_default:0}],null),1);
 assert.equal(chooseActiveFreezer([{id:1,is_default:1},{id:2,is_default:0}],2),2);
+assert.equal(normalizeProduct('  ERBSEN '),'erbsen');
+assert.equal(quantityDimension([{kind:'loose',amount:'2',unit:'piece'}]),'count');
+const candidates=[{id:1,product:'Erbsen',dimension:'weight'},{id:2,product:' erbsen ',dimension:'count'},{id:3,product:'Mais',dimension:'weight'}];
+assert.deepEqual(findMergeCandidates(candidates,'ERBSEN',[{amount:'500',unit:'g'}]).map(item=>item.id),[1]);
+assert.deepEqual(auditChanges({product:'Erbsen',note:null,amount:1},{product:'Erbsen',note:'offen',amount:2}),[{field:'note',before:null,after:'offen'},{field:'amount',before:1,after:2}]);
+assert.match(formatAuditValue([{kind:'loose',amount:500}]),/"amount": 500/);
 console.log('JavaScript-Modultests erfolgreich');
