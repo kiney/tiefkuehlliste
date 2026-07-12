@@ -100,7 +100,7 @@ def test_validation_is_atomic(client, auth):
     assert client.get("/api/audit", headers=auth).json["data"] == []
 
 
-def test_partial_withdrawal_converts_package_and_merges_loose(client, auth):
+def test_withdrawal_prefers_explicit_loose_source(client, auth):
     freezer = client.get("/api/freezers", headers=auth).json["data"][0]
     made = client.post(
         "/api/items",
@@ -117,9 +117,76 @@ def test_partial_withdrawal_converts_package_and_merges_loose(client, auth):
     result = client.post(
         f"/api/items/{made['id']}/withdraw",
         headers=auth,
-        json={"part_index": 0, "amount": 200},
+        json={"part_index": 1, "amount": 200},
     )
     assert result.status_code == 200
     assert result.json["data"]["parts"] == [
-        {"kind": "loose", "amount": 1600, "package_size": None, "unit": "g"}
+        {"kind": "package", "amount": 1, "package_size": 1000, "unit": "g"},
+        {"kind": "loose", "amount": 600, "package_size": None, "unit": "g"},
     ]
+
+
+def test_repeated_withdrawal_uses_selected_component_without_merging(client, auth):
+    freezer = client.get("/api/freezers", headers=auth).json["data"][0]
+    made = client.post(
+        "/api/items",
+        headers=auth,
+        json={
+            "freezer_id": freezer["id"],
+            "product": "Brokkoli",
+            "parts": [
+                {"kind": "package", "amount": 2, "package_size": 500, "unit": "g"},
+                {"kind": "loose", "amount": 250, "unit": "g"},
+            ],
+        },
+    ).json["data"]
+    first = client.post(
+        f"/api/items/{made['id']}/withdraw",
+        headers=auth,
+        json={"part_index": 1, "amount": 250},
+    ).json["data"]
+    assert first["parts"] == [{"kind": "package", "amount": 2, "package_size": 500, "unit": "g"}]
+    second = client.post(
+        f"/api/items/{made['id']}/withdraw",
+        headers=auth,
+        json={"part_index": 0, "amount": 250},
+    ).json["data"]
+    assert second["parts"] == [
+        {"kind": "package", "amount": 1, "package_size": 500, "unit": "g"},
+        {"kind": "loose", "amount": 250, "package_size": None, "unit": "g"},
+    ]
+
+
+def test_withdrawal_from_loose_only_and_whole_package(client, auth):
+    freezer = client.get("/api/freezers", headers=auth).json["data"][0]
+    loose = client.post(
+        "/api/items",
+        headers=auth,
+        json={
+            "freezer_id": freezer["id"],
+            "product": "Steak",
+            "parts": [{"kind": "loose", "amount": 500, "unit": "g"}],
+        },
+    ).json["data"]
+    reduced = client.post(
+        f"/api/items/{loose['id']}/withdraw",
+        headers=auth,
+        json={"part_index": 0, "amount": 200},
+    ).json["data"]
+    assert reduced["parts"][0]["amount"] == 300
+
+    package = client.post(
+        "/api/items",
+        headers=auth,
+        json={
+            "freezer_id": freezer["id"],
+            "product": "Pizza",
+            "parts": [{"kind": "package", "amount": 2, "package_size": 1, "unit": "piece"}],
+        },
+    ).json["data"]
+    reduced = client.post(
+        f"/api/items/{package['id']}/withdraw",
+        headers=auth,
+        json={"part_index": 0, "amount": 1},
+    ).json["data"]
+    assert reduced["parts"][0]["amount"] == 1

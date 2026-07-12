@@ -343,18 +343,14 @@ def create_app(test_config=None):
                 selected["amount"] -= 1
                 remainder = size - amount
                 if remainder:
-                    loose = next((p for p in parts if p["kind"] == "loose"), None)
-                    if loose:
-                        loose["amount"] += remainder
-                    else:
-                        parts.append(
-                            {
-                                "kind": "loose",
-                                "amount": remainder,
-                                "package_size": None,
-                                "unit": selected["unit"],
-                            }
-                        )
+                    parts.append(
+                        {
+                            "kind": "loose",
+                            "amount": remainder,
+                            "package_size": None,
+                            "unit": selected["unit"],
+                        }
+                    )
             parts = [part for part in parts if part["amount"] > 0]
             archived = None if parts else now()
             db.execute(

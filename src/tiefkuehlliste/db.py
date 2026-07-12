@@ -57,6 +57,9 @@ def init_db():
     db.executescript(SCHEMA)
     if not db.execute("SELECT 1 FROM schema_migrations WHERE version=1").fetchone():
         db.execute("INSERT INTO schema_migrations VALUES(1,?)", (now(),))
+    if not db.execute("SELECT 1 FROM schema_migrations WHERE version=2").fetchone():
+        db.execute("UPDATE items SET note=NULL WHERE note='None'")
+        db.execute("INSERT INTO schema_migrations VALUES(2,?)", (now(),))
     if not db.execute("SELECT 1 FROM freezers").fetchone():
         stamp = now()
         db.execute(
