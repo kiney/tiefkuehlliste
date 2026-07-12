@@ -1,10 +1,11 @@
 ---
 id: TASK-1
 title: Digitale Tiefkühl-Inventarliste entwickeln
-status: To Do
-assignee: []
+status: Done
+assignee:
+  - '@codex'
 created_date: '2026-07-11 23:56'
-updated_date: '2026-07-11 23:59'
+updated_date: '2026-07-12 00:18'
 labels:
   - umbrella
   - feature
@@ -227,3 +228,21 @@ Der Umbrella Task ist abgeschlossen, sobald:
 - Jinja plus Vanilla JavaScript.
 - Angemessene automatisierte Frontendtests und erlaubte Browser-MCP-Unterstützung während der Entwicklung.
 <!-- SECTION:DESCRIPTION:END -->
+
+## Implementation Plan
+
+<!-- SECTION:PLAN:BEGIN -->
+1. Architektur und Mengenmodell dokumentieren.\n2. Projektgrundlage, STRICT-SQLite und Datenzugriff aufbauen.\n3. YAML-Login, Session und CSRF absichern.\n4. Fachlogik und JSON-API implementieren.\n5. Mobile-first UI mit Vanilla JS fertigstellen.\n6. Backend-, JS- und Browserabläufe testen.\n7. Installation, Betrieb und Abnahme dokumentieren.
+<!-- SECTION:PLAN:END -->
+
+## Implementation Notes
+
+<!-- SECTION:NOTES:BEGIN -->
+Untertasks TASK-1.1 bis TASK-1.8 abgeschlossen. Verifikation: uv sync erfolgreich; Ruff Format/Lint grün; 5 Pytest-Fälle und Node-Modultest grün; frische STRICT-Datenbank initialisiert; Chrome-Smoke-Test mobil 390x844 und Desktop 1440x900 inklusive Login, Standard-/Truhenwechsel, 3×500 g, 800 g, Suche, Änderung, Archivierung, Reaktivierung, Audit, Logout und Theme erfolgreich. Gefundener Mobil-Überlauf und null-Hinweis wurden behoben. Keine kritischen/hohen bekannten Defekte.
+<!-- SECTION:NOTES:END -->
+
+## Final Summary
+
+<!-- SECTION:FINAL_SUMMARY:BEGIN -->
+Lokale mobile-first Tiefkühlinventar-Webanwendung vollständig umgesetzt: Flask/STRICT-SQLite, YAML-Login/CSRF, strukturierte Mengen und Teilentnahme, mehrere Truhen, Audit, responsive Vanilla-JS-Oberfläche, Tests und Betriebsdokumentation. Alle acht Untertasks und die vollständige Abnahme sind abgeschlossen.
+<!-- SECTION:FINAL_SUMMARY:END -->

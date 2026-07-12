@@ -1,0 +1,11 @@
+import assert from 'node:assert/strict';
+import {chooseActiveFreezer,filterItems,formatQuantity,nextTheme} from '../../src/tiefkuehlliste/static/modules.js';
+const parts=[{kind:'package',amount:1,package_size:1000,unit:'g'},{kind:'loose',amount:800,unit:'g'}];
+assert.equal(formatQuantity(parts),'1 × 1000 g + 800 g');
+assert.equal(formatQuantity([{kind:'loose',amount:2,unit:'piece'}]),'2 Stück');
+assert.equal(filterItems([{product:'Brokkoli',parts,note:'offen'}],'800').length,1);
+assert.equal(filterItems([{product:'Brokkoli',parts,note:'offen'}],'möhre').length,0);
+assert.equal(nextTheme('system'),'light');assert.equal(nextTheme('light'),'dark');assert.equal(nextTheme('dark'),'system');
+assert.equal(chooseActiveFreezer([{id:1,is_default:1},{id:2,is_default:0}],null),1);
+assert.equal(chooseActiveFreezer([{id:1,is_default:1},{id:2,is_default:0}],2),2);
+console.log('JavaScript-Modultests erfolgreich');
