@@ -21,6 +21,14 @@ def test_auth_csrf_and_logout(client):
     )
 
 
+def test_inventory_and_archive_use_semantic_tables(client, auth):
+    page = client.get("/", headers=auth)
+    assert page.status_code == 200
+    assert page.text.count('<table class="inventory-table">') == 2
+    assert '<tbody id="items"></tbody>' in page.text
+    assert '<tbody id="archived"></tbody>' in page.text
+
+
 def test_strict_schema_and_single_default(app):
     db = sqlite3.connect(app.config["DATABASE"])
     tables = {
