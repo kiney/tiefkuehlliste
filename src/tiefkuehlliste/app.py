@@ -5,6 +5,7 @@ from pathlib import Path
 from flask import Flask, jsonify, redirect, render_template, request, session, url_for
 
 from .auth import authenticate, ensure_csrf, login_required, validate_csrf
+from .config import default_config_path, load_config
 from .db import audit, close_db, get_db, init_db, now, transaction
 
 
@@ -92,12 +93,16 @@ def validate_item(data):
 
 def create_app(test_config=None):
     app = Flask(__name__, instance_relative_config=True)
+    config_file = os.getenv("TIEFKUEHLLISTE_CONFIG", str(default_config_path()))
+    if test_config and "CONFIG_FILE" in test_config:
+        config_file = test_config["CONFIG_FILE"]
+    file_config = load_config(config_file)
     app.config.from_mapping(
         SECRET_KEY=os.getenv("SECRET_KEY", "development-only-change-me"),
         DATABASE=os.getenv("DATABASE", str(Path(app.instance_path) / "inventory.sqlite")),
-        USERS_FILE=os.getenv(
-            "USERS_FILE", str(Path(app.root_path).parents[1] / "config/users.yaml")
-        ),
+        CONFIG_FILE=config_file,
+        SERVER_HOST=file_config["server"]["host"],
+        SERVER_PORT=file_config["server"]["port"],
         SESSION_COOKIE_HTTPONLY=True,
         SESSION_COOKIE_SAMESITE="Lax",
         SESSION_COOKIE_SECURE=os.getenv("COOKIE_SECURE", "0") == "1",

@@ -1,3 +1,7 @@
+server:
+  host: 127.0.0.1
+  port: 5000
+
 users:
   - username: beispiel
     password_hash: "scrypt:32768:8:1$NUR_EIN_BEISPIEL$HASH_MIT_DOKUMENTIERTEM_KOMMANDO_ERSETZEN"

@@ -46,7 +46,7 @@ def validate_csrf():
 
 
 def authenticate(username, password):
-    stored = load_users(current_app.config["USERS_FILE"]).get(username)
+    stored = load_users(current_app.config["CONFIG_FILE"]).get(username)
     return bool(stored and check_password_hash(stored, password))
 
 

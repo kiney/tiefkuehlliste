@@ -7,10 +7,13 @@ from tiefkuehlliste import create_app
 
 @pytest.fixture
 def app(tmp_path):
-    users = tmp_path / "users.yaml"
-    users.write_text(
+    config = tmp_path / "config.yaml"
+    config.write_text(
         yaml.safe_dump(
-            {"users": [{"username": "anna", "password_hash": generate_password_hash("secret")}]},
+            {
+                "server": {"host": "127.0.0.1", "port": 5000},
+                "users": [{"username": "anna", "password_hash": generate_password_hash("secret")}],
+            },
             allow_unicode=True,
         ),
         encoding="utf-8",
@@ -20,7 +23,7 @@ def app(tmp_path):
             "TESTING": True,
             "SECRET_KEY": "test",
             "DATABASE": str(tmp_path / "test.sqlite"),
-            "USERS_FILE": str(users),
+            "CONFIG_FILE": str(config),
         }
     )
 
