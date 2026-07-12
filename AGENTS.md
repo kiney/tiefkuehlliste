@@ -23,3 +23,9 @@ Do not edit Backlog task, draft, document, decision, or milestone markdown files
 
 </CRITICAL_INSTRUCTION>
 <!-- BACKLOG.MD GUIDELINES END -->
+
+## Browser-based development
+
+Agents may use an available browser MCP during development for visual inspection,
+responsive UI checks, accessibility-oriented checks, and end-to-end smoke tests.
+Browser MCP checks complement, but do not replace, reproducible automated tests.
