@@ -32,6 +32,56 @@ Die URL folgt `server.host` und `server.port`. `tiefkuehlliste --port 8080` bezi
 
 Hinweis: Die Datenbank wird beim App-Start automatisch auf das aktuelle nummerierte Schema gebracht. Das zusätzliche `init-db`-Kommando ist idempotent und dient der expliziten Betriebsprüfung.
 
+## Container mit Podman
+
+Das Image lauscht standardmäßig auf `0.0.0.0:2480` und läuft als nicht
+privilegierter Benutzer. Im Container werden diese Pfade verwendet:
+
+- `/config/config.yaml`: YAML-Konfiguration, nur lesend einbinden
+- `/data/inventory.sqlite`: SQLite-Datenbank; das gesamte Verzeichnis `/data`
+  beschreibbar und persistent einbinden
+
+Für eine direkt auf dem Host sichtbare Datenbank das lokale, von Git ignorierte
+Verzeichnis `instance/` verwenden:
+
+```sh
+podman build -t tiefkuehlliste .
+mkdir -p instance
+podman run --rm -p 2480:2480 \
+  -v ./instance:/data:Z,U \
+  -v ./config/config.yaml:/config/config.yaml:ro,Z \
+  -e SECRET_KEY='einen-langen-zufaelligen-wert-eintragen' \
+  tiefkuehlliste
+```
+
+Damit liegt die Datenbank dauerhaft unter `./instance/inventory.sqlite`. Die
+Podman-Option `U` passt den Eigentümer des Host-Verzeichnisses an den
+Container-Benutzer an und kann dessen Eigentümer auf dem Host verändern. `Z`
+setzt bei aktiviertem SELinux das passende private Label. Das gesamte Verzeichnis
+wird eingebunden, damit SQLite auch Journaldateien daneben anlegen kann.
+
+Alternativ hält ein benanntes Podman-Volume die Daten außerhalb des
+Projektverzeichnisses:
+
+```sh
+podman volume create tiefkuehlliste-data
+podman run --rm -p 2480:2480 \
+  -v tiefkuehlliste-data:/data:U \
+  -v ./config/config.yaml:/config/config.yaml:ro,Z \
+  -e SECRET_KEY='einen-langen-zufaelligen-wert-eintragen' \
+  tiefkuehlliste
+```
+
+Vor dem Start `config/config.yaml` wie oben beschrieben anlegen und einen echten
+Passwort-Hash eintragen. Die Konfiguration bleibt durch `ro` schreibgeschützt;
+`SECRET_KEY` wird separat als Umgebungsvariable übergeben. Ohne expliziten
+`/data`-Mount erzeugt Podman wegen der `VOLUME`-Anweisung ein anonymes Volume,
+das sich für gezielte Backups und Restores schlechter zuordnen lässt.
+
+Ein anderer Host-Port kann links in der Portzuordnung gewählt werden,
+beispielsweise `-p 8080:2480`. Um auch den Port im Container zu ändern,
+zusätzlich `-e PORT=8080` und `-p 8080:8080` setzen.
+
 ## Virtuelle Umgebung mit `uv venv`
 
 ```sh

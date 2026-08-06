@@ -4,4 +4,5 @@ __pycache__/
 .ruff_cache/
 instance/
 config/config.yaml
+Makefile
 *.pyc

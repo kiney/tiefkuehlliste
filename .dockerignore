@@ -1,0 +1,12 @@
+.git
+.venv
+.pytest_cache
+.ruff_cache
+__pycache__
+*.py[cod]
+instance
+backlog
+config/config.yaml
+inventarliste.pdf
+inventarliste.tex
+Scan 2026-07-12 00.40.34.pdf
