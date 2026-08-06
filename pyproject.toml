@@ -1,7 +1,8 @@
 [project]
 name = "tiefkuehlliste"
 version = "0.1.0"
-description = "Lokale, mobile-first Tiefkuehl-Inventarliste"
+description = "Self-hosted, mobile-first freezer inventory"
+license = {file = "LICENSE"}
 requires-python = ">=3.11"
 dependencies = ["Flask>=3.1,<4", "PyYAML>=6,<7"]
 
