@@ -2,6 +2,20 @@
 
 [Deutsche Fassung](#deutsch) · [Englische Fassung](#english)
 
+## Screenshots
+
+Desktop-Bestand / Desktop inventory:
+
+![Desktop-Bestandsansicht mit synthetischen Beispieldaten](docs/screenshots/bestand-desktop.png)
+
+Entnahme einer Teilmenge aus einer Packung / Withdrawing a partial quantity from a package:
+
+![Entnahmedialog mit ausgewählter Packung und Teilmenge](docs/screenshots/entnahme-dialog.png)
+
+Mobile Bestandsansicht im Dark Mode / Mobile inventory in dark mode:
+
+![Mobile Bestandsansicht im dunklen Farbschema](docs/screenshots/bestand-mobil-dark.png)
+
 ## Deutsch
 
 Eine kleine, lokal betriebene Flask-/SQLite-Anwendung für mehrere Tiefkühltruhen. Sie unterstützt strukturierte Packungs- und Restmengen, clientseitige Suche, Archiv, Änderungsverlauf und ein mobiles Light-/Dark-UI.

@@ -28,6 +28,20 @@ Chrome DevTools, mobil 390 × 844 mit Touch und Desktop 1440 × 900:
 - System-Dark-Mode erkannt; manueller Dark-Zustand in `localStorage` und DOM persistent gesetzt; Light-Zustand ebenfalls durchschaltbar.
 - Mobil und Desktop betrug die Differenz aus Dokument- und Viewportbreite 0 px; sichtbare Labels und zugängliche Namen waren im Accessibility-Tree vorhanden.
 
+### Screenshots der Testsession
+
+Desktop-Bestand mit synthetischen Beispieldaten:
+
+![Desktop-Bestandsansicht mit Beispieldaten](screenshots/bestand-desktop.png)
+
+Entnahmedialog mit ausgewählter Packung und Teilmenge:
+
+![Entnahmedialog für eine Teilentnahme aus einer Packung](screenshots/entnahme-dialog.png)
+
+Mobile Bestandsansicht im dunklen Farbschema:
+
+![Mobile Bestandsansicht im dunklen Farbschema](screenshots/bestand-mobil-dark.png)
+
 Einlagern benötigt Produkttext, Mengentext und Speichern (3 zielgerichtete Interaktionen, innerhalb des Ziels 4). Eine ganze Packung wird über „Aus Packung“, vorbelegten Packungswert und Bestätigung in höchstens 3 Interaktionen entnommen. „Alles entnommen“ benötigt Aktion und Sicherheitsbestätigung (2, innerhalb des Ziels 3). Die Teilentnahme benennt die gewählte Packung ausdrücklich und bewahrt die Eingabe bei Serverfehlern im Formular.
 
 Bei der Prüfung gefundener horizontaler Mobil-Überlauf und eine `null`-Hinweisdarstellung wurden behoben und anschließend erneut geprüft. Keine kritischen oder hohen bekannten Defekte verblieben.
@@ -58,6 +72,20 @@ Chrome DevTools, mobile at 390 × 844 with touch and desktop at 1440 × 900:
 - The history showed user, action, entity, ID, and timestamp in chronological order.
 - System dark mode was detected; the manual dark setting persisted in `localStorage` and the DOM, and the light setting could also be selected.
 - On mobile and desktop, the difference between document width and viewport width was 0 px; visible labels and accessible names were present in the accessibility tree.
+
+### Test-session screenshots
+
+Desktop inventory with synthetic sample data:
+
+![Desktop inventory view with sample data](screenshots/bestand-desktop.png)
+
+Withdrawal dialog with a selected package and partial quantity:
+
+![Withdrawal dialog for taking a partial quantity from a package](screenshots/entnahme-dialog.png)
+
+Mobile inventory view using the dark color scheme:
+
+![Mobile inventory view using the dark color scheme](screenshots/bestand-mobil-dark.png)
 
 Storing an item requires the product text, quantity text, and Save action (3 targeted interactions, within the goal of 4). Taking a whole package requires at most 3 interactions: “Aus Packung”, the prefilled package value, and confirmation. “Alles entnommen” requires the action and a safety confirmation (2 interactions, within the goal of 3). Partial withdrawal explicitly identifies the selected package and preserves the input in the form if the server returns an error.
 
