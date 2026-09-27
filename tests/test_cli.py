@@ -19,7 +19,7 @@ def test_help_exits_without_starting_server(capsys):
     assert result.value.code == 0
     output = capsys.readouterr().out
     assert "--port PORT" in output
-    assert "Startet die lokale Tiefkühl-Inventarliste" in output
+    assert "Startet die lokale Vorratsliste" in output
 
 
 def test_yaml_server_options_and_cli_override(tmp_path, monkeypatch):

@@ -8,7 +8,7 @@ from .config import default_config_path, load_config
 def build_parser():
     parser = argparse.ArgumentParser(
         prog="tiefkuehlliste",
-        description="Startet die lokale Tiefkühl-Inventarliste.",
+        description="Startet die lokale Vorratsliste.",
     )
     parser.add_argument(
         "--config",

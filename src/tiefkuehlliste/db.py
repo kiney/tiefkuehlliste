@@ -64,7 +64,7 @@ def init_db():
         stamp = now()
         db.execute(
             "INSERT INTO freezers(name,is_default,created_at,updated_at) VALUES(?,1,?,?)",
-            ("Tiefkühltruhe", stamp, stamp),
+            ("Lagerort 1", stamp, stamp),
         )
     db.commit()
 

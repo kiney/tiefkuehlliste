@@ -1,5 +1,7 @@
 import sqlite3
 
+from tiefkuehlliste.db import init_db
+
 
 def test_auth_csrf_and_logout(client):
     assert client.get("/").status_code == 302
@@ -24,6 +26,9 @@ def test_auth_csrf_and_logout(client):
 def test_inventory_and_archive_use_semantic_tables(client, auth):
     page = client.get("/", headers=auth)
     assert page.status_code == 200
+    assert "Aktiver Lagerort" in page.text
+    assert "Lagerorte verwalten" in page.text
+    assert "Eingelagert am" in page.text
     assert page.text.count('<table class="inventory-table">') == 2
     assert '<tbody id="items"></tbody>' in page.text
     assert '<tbody id="archived"></tbody>' in page.text
@@ -38,6 +43,16 @@ def test_strict_schema_and_single_default(app):
     }
     assert all("STRICT" in sql for sql in tables.values())
     assert db.execute("SELECT count(*) FROM freezers WHERE is_default=1").fetchone()[0] == 1
+    assert db.execute("SELECT name FROM freezers WHERE is_default=1").fetchone()[0] == "Lagerort 1"
+
+
+def test_existing_location_name_survives_initialization(app):
+    with sqlite3.connect(app.config["DATABASE"]) as db:
+        db.execute("UPDATE freezers SET name='Tiefkühltruhe' WHERE is_default=1")
+    with app.app_context():
+        init_db()
+    with sqlite3.connect(app.config["DATABASE"]) as db:
+        assert db.execute("SELECT name FROM freezers WHERE is_default=1").fetchone()[0] == "Tiefkühltruhe"
 
 
 def test_freezers_items_quantities_archive_audit(client, auth):

@@ -215,7 +215,7 @@ def create_app(test_config=None):
         with transaction() as db:
             old = db.execute("SELECT * FROM freezers WHERE id=?", (freezer_id,)).fetchone()
             if not old:
-                return error("Truhe nicht gefunden.", 404, "not_found")
+                return error("Lagerort nicht gefunden.", 404, "not_found")
             before = dict(old)
             name = str(data.get("name", old["name"])).strip()
             if not name:
@@ -253,7 +253,7 @@ def create_app(test_config=None):
         freezer_id = data.get("freezer_id")
         with transaction() as db:
             if not db.execute("SELECT 1 FROM freezers WHERE id=?", (freezer_id,)).fetchone():
-                return error("Truhe nicht gefunden.", 404, "not_found")
+                return error("Lagerort nicht gefunden.", 404, "not_found")
             stamp = now()
             archived = None if clean["parts"] else stamp
             cur = db.execute(

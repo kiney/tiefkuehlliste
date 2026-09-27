@@ -1,4 +1,4 @@
-# Tiefkühlliste
+# Vorratsliste
 
 [Deutsche Fassung](#deutsch) · [Englische Fassung](#english)
 
@@ -18,7 +18,7 @@ Mobile Bestandsansicht im Dark Mode / Mobile inventory in dark mode:
 
 ## Deutsch
 
-Eine kleine, lokal betriebene Flask-/SQLite-Anwendung für mehrere Tiefkühltruhen. Sie unterstützt strukturierte Packungs- und Restmengen, clientseitige Suche, Archiv, Änderungsverlauf und ein mobiles Light-/Dark-UI.
+Eine kleine, lokal betriebene Flask-/SQLite-Anwendung für mehrere Lagerorte, etwa Tiefkühltruhe, Vorratsschrank oder Keller. Sie unterstützt strukturierte Packungs- und Restmengen, clientseitige Suche, Archiv, Änderungsverlauf und ein mobiles Light-/Dark-UI. Das optionale Datum „Eingelagert am“ kann bei Tiefkühlware weiterhin als Einfrierdatum verwendet werden.
 
 > **Hinweis:** Die Anwendung selbst ist derzeit ausschließlich auf Deutsch verfügbar. Eine mehrsprachige Benutzeroberfläche ist für dieses Sideprojekt aktuell nicht geplant.
 
@@ -48,7 +48,7 @@ uv run flask --app tiefkuehlliste:create_app init-db
 uv run tiefkuehlliste
 ```
 
-Die URL folgt `server.host` und `server.port`. `tiefkuehlliste --port 8080` beziehungsweise `--host` überschreiben die YAML-Werte; `PORT` und `HOST` sind nachrangige Umgebungsvariablen. Mit `--config PFAD` oder `TIEFKUEHLLISTE_CONFIG` lässt sich eine andere Konfigurationsdatei wählen. Beim ersten Start wird `instance/inventory.sqlite` inklusive Standardtruhe angelegt. `DATABASE` setzt einen alternativen Datenbankpfad; für einen HTTPS-Reverse-Proxy aktiviert `COOKIE_SECURE=1` sichere Cookies.
+Die URL folgt `server.host` und `server.port`. `tiefkuehlliste --port 8080` beziehungsweise `--host` überschreiben die YAML-Werte; `PORT` und `HOST` sind nachrangige Umgebungsvariablen. Mit `--config PFAD` oder `TIEFKUEHLLISTE_CONFIG` lässt sich eine andere Konfigurationsdatei wählen. Beim ersten Start wird `instance/inventory.sqlite` inklusive „Lagerort 1“ angelegt. Über „Lagerorte“ kann dieser umbenannt und können weitere Orte angelegt werden. Bei bestehenden Datenbanken bleiben alle Namen und Bestände unverändert. `DATABASE` setzt einen alternativen Datenbankpfad; für einen HTTPS-Reverse-Proxy aktiviert `COOKIE_SECURE=1` sichere Cookies.
 
 Hinweis: Die Datenbank wird beim App-Start automatisch auf das aktuelle nummerierte Schema gebracht. Das zusätzliche `init-db`-Kommando ist idempotent und dient der expliziten Betriebsprüfung.
 
@@ -139,7 +139,7 @@ Dieses Projekt steht unter der [Do What The Fuck You Want To Public License, Ver
 
 ## English
 
-A small, self-hosted Flask/SQLite application for managing multiple freezers. It supports structured package and remainder quantities, client-side search, an archive, a change history, and a mobile-friendly light/dark UI.
+A small, self-hosted Flask/SQLite application for managing multiple storage locations, such as a freezer, pantry cupboard, or cellar. It supports structured package and remainder quantities, client-side search, an archive, a change history, and a mobile-friendly light/dark UI. The optional “stored on” date can still be used as a freezing date for frozen food.
 
 > **Note:** The application itself is currently available in German only. A multilingual UI is not currently planned for this side project.
 
@@ -169,7 +169,7 @@ uv run flask --app tiefkuehlliste:create_app init-db
 uv run tiefkuehlliste
 ```
 
-The URL follows `server.host` and `server.port`. `tiefkuehlliste --port 8080` and `--host` override the YAML values; the `PORT` and `HOST` environment variables have lower precedence. Use `--config PATH` or `TIEFKUEHLLISTE_CONFIG` to select a different configuration file. On first launch, `instance/inventory.sqlite` is created along with a default freezer. `DATABASE` selects an alternative database path; set `COOKIE_SECURE=1` to enable secure cookies behind an HTTPS reverse proxy.
+The URL follows `server.host` and `server.port`. `tiefkuehlliste --port 8080` and `--host` override the YAML values; the `PORT` and `HOST` environment variables have lower precedence. Use `--config PATH` or `TIEFKUEHLLISTE_CONFIG` to select a different configuration file. On first launch, `instance/inventory.sqlite` is created along with a default location named “Lagerort 1”. The “Lagerorte” menu lets you rename it and add more locations. Existing databases keep all location names and inventory unchanged. `DATABASE` selects an alternative database path; set `COOKIE_SECURE=1` to enable secure cookies behind an HTTPS reverse proxy.
 
 Note: The database is automatically migrated to the latest numbered schema when the application starts. The additional `init-db` command is idempotent and serves as an explicit operational check.
 
