@@ -23,7 +23,7 @@ RUN groupadd --gid 10001 tiefkuehlliste \
         /data /config /usr/local/var/tiefkuehlliste.app-instance
 
 COPY --from=builder /wheels /wheels
-RUN python -m pip install --no-cache-dir /wheels/*.whl \
+RUN python -m pip install --no-cache-dir /wheels/*.whl 'gunicorn>=26,<27' \
     && rm -rf /wheels
 
 USER tiefkuehlliste
@@ -31,4 +31,4 @@ USER tiefkuehlliste
 VOLUME ["/data"]
 EXPOSE 2480
 
-CMD ["tiefkuehlliste"]
+CMD ["sh", "-c", "exec gunicorn --bind \"${HOST}:${PORT}\" --workers 1 --threads 2 --access-logfile - 'tiefkuehlliste.app:create_app()'"]

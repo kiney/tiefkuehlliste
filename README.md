@@ -54,8 +54,12 @@ Hinweis: Die Datenbank wird beim App-Start automatisch auf das aktuelle nummerie
 
 ### Container mit Podman
 
-Das Image lauscht standardmäßig auf `0.0.0.0:2480` und läuft als nicht
-privilegierter Benutzer. Im Container werden diese Pfade verwendet:
+Das Image startet Gunicorn mit einem Worker und zwei Threads, lauscht standardmäßig
+auf `0.0.0.0:2480` und läuft als nicht privilegierter Benutzer. `HOST` und `PORT`
+steuern die Bind-Adresse und den Port im Container; Zugriffslogs erscheinen in
+der Containerausgabe. Bei vorgeschaltetem Caddy sollten beide Container ein
+privates Netzwerk teilen und der App-Port nicht öffentlich veröffentlicht werden.
+Im Container werden diese Pfade verwendet:
 
 - `/config/config.yaml`: YAML-Konfiguration, nur lesend einbinden
 - `/data/inventory.sqlite`: SQLite-Datenbank; das gesamte Verzeichnis `/data`
@@ -175,7 +179,12 @@ Note: The database is automatically migrated to the latest numbered schema when 
 
 ### Container with Podman
 
-By default, the image listens on `0.0.0.0:2480` and runs as an unprivileged user. It uses these paths inside the container:
+The image starts Gunicorn with one worker and two threads, listens on
+`0.0.0.0:2480` by default, and runs as an unprivileged user. `HOST` and `PORT`
+set the bind address and port inside the container; access logs go to the
+container output. When using Caddy as a reverse proxy, put both containers on
+a private network and do not publish the app port publicly. The container uses
+these paths:
 
 - `/config/config.yaml`: YAML configuration, mounted read-only
 - `/data/inventory.sqlite`: SQLite database; mount the entire `/data` directory as writable and persistent
