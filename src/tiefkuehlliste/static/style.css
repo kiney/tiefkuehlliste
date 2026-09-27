@@ -44,6 +44,9 @@ button { background:var(--accent); color:var(--surface); border-color:transparen
 .wide { width:100%; margin:1rem 0; }
 .error { color:#b42318; min-height:1.2em; }
 .hint { color:var(--muted); margin:0; }
+.change-toast { position:fixed; z-index:3; bottom:1rem; left:50%; transform:translateX(-50%); display:flex; align-items:center; gap:.8rem; width:max-content; max-width:calc(100% - 2rem); padding:.55rem .65rem .55rem 1rem; border-radius:.7rem; background:var(--text); color:var(--surface); box-shadow:0 .3rem 1rem #0004; overflow-wrap:anywhere; cursor:pointer; }
+.change-toast[hidden] { display:none; }
+.change-toast button { flex:none; min-height:2rem; padding:.1rem .55rem; background:transparent; color:inherit; font-size:1.4rem; }
 .dialog-actions { display:flex; justify-content:flex-end; gap:.6rem; flex-wrap:wrap; }
 dialog { width:min(40rem,calc(100% - 2rem)); max-height:85vh; border:1px solid var(--border); border-radius:1rem; background:var(--surface); color:var(--text); }
 #history-dialog { width:min(72rem,calc(100% - 2rem)); }
