@@ -31,4 +31,4 @@ USER tiefkuehlliste
 VOLUME ["/data"]
 EXPOSE 2480
 
-CMD ["sh", "-c", "exec gunicorn --bind \"${HOST}:${PORT}\" --workers 1 --threads 2 --access-logfile - 'tiefkuehlliste.app:create_app()'"]
+CMD ["sh", "-c", "exec gunicorn --bind \"${HOST}:${PORT}\" --workers 1 --threads 2 --no-control-socket --access-logfile - 'tiefkuehlliste.app:create_app()'"]
